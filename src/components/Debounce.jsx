@@ -3,6 +3,7 @@ import '../styles/Debounce.css'
 import logo from '../images/location.png'
 import axios from 'axios'
 import { useState } from 'react'
+import cloud from '../images/clouds.png'
 
   const Debounce = () => {
 
@@ -17,12 +18,12 @@ import { useState } from 'react'
     const [weather, setWeather] = useState([])
     const [display, setDisplay] = useState(true)
 
-    const Weather = (name) => {
+    const WeatherFetch = (name) => {
       // console.log(name)
 
       axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${name}&cnt=7&appid=5c6004fc3786d57b9d23c346916d72e5&units=metric`).then((res)=>{
-          setWeather(res.data)
-           console.log(res.data)
+          setWeather(res.data.list)
+           console.log(res.data.list)
       
 
 
@@ -62,13 +63,12 @@ import { useState } from 'react'
           
           // setName(ele.city)
           setDisplay(true)
-          Weather(ele.city)
+          WeatherFetch(ele.city)
     }
-    
-    // console.log("name " , name)
+
+   
   return (
     <>
-    {/* <div className='whole'> */}
       <div className='mainBox'>
           <div className='logoinp'>
             <img src={logo} alt=""  className='logo'/>
@@ -84,9 +84,24 @@ import { useState } from 'react'
             })}
           </div>
       </div>
+      {/* ------------------------------------------------------------------------------------------- */}
+      <div className='outWeatherBox'>
+          {weather.map((data, i)=>{
+            return(
+              <div key={i} className='singleweather'>
+                  <h4>Clouds</h4>
+                  <img src={cloud} alt="" className='cloudImg' />
+                  <p className='temp'>{data.main.temp_min} °</p>
+                   <h4 className='temp'>{data.main.temp_max} °</h4>
+              </div>
+            )
+          })}
+      </div>
 
-    {/* </div> */}
     </>
+
+
+              
   )
 }
 
