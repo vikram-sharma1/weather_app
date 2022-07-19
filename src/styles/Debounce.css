@@ -1,9 +1,10 @@
+
 .mainBox{
     width: 50%;
     margin: auto;
     padding-right: 1%;
     padding: 1%;
-    border: 1px solid black;
+    height: 70px;
 }
 .inpSearchBox{
     width: 98%;
@@ -24,10 +25,35 @@
 }
 
 .outputBox{
-    border: 1px solid black;
-    height: 200px;
+    /* border: 1px solid black; */
+    height: 400px;
     width: 96.5%;
     margin-left: 3%;
     margin-top: 5px;
     border-radius: 8px;
+    overflow-y: scroll;
+    
+}
+
+.outputBox::-webkit-scrollbar {
+    display: none;
+}
+
+.cityBoxSingle{
+    border: 1px solid black;
+    height: 50px;
+    margin-top: 1px;
+    border-radius: 8px;
+}
+.cityBoxSingle:hover{
+    cursor: pointer;
+    background-color: aquamarine;
+}
+.city{
+    font-size: 20px;
+    padding: 5px;
+    font-weight: 500;
+}
+.state{
+    font-size: 15px;
 }
