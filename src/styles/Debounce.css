@@ -1,0 +1,33 @@
+.mainBox{
+    width: 50%;
+    margin: auto;
+    padding-right: 1%;
+    padding: 1%;
+    border: 1px solid black;
+}
+.inpSearchBox{
+    width: 98%;
+    height: 50px;
+    border-radius: 8px;
+    font-size: 23px;
+    padding-left: 45px;
+}
+.logoinp{
+    display: flex;
+}
+.logo{
+    width: 3%;
+    height: 95%;
+    position: relative;
+    top: 15px;
+    left: 38px;
+}
+
+.outputBox{
+    border: 1px solid black;
+    height: 200px;
+    width: 96.5%;
+    margin-left: 3%;
+    margin-top: 5px;
+    border-radius: 8px;
+}
