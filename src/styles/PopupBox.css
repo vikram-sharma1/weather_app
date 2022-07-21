@@ -1,0 +1,17 @@
+.mainBoxpopUp{
+    text-align: center;
+    /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
+}
+table{
+
+    /* border: 1px solid black; */
+    width: 100%;
+    font-size: 18px;
+}
+.col{
+    text-align: center;
+    width: 50%;
+}
+.temp{
+    font-size: 21px;
+}

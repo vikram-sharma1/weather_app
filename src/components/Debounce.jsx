@@ -4,36 +4,58 @@ import logo from '../images/location.png'
 import axios from 'axios'
 import { useState } from 'react'
 import cloud from '../images/clouds.png'
+import Modal from 'react-modal';
+import PopupBox from './PopupBox'
+
 
   const Debounce = () => {
 
 
-
-   
-
     let id;
 
-    // const [name, setName] = useState('')
     const [cities, setCities] = useState([])
     const [weather, setWeather] = useState([])
     const [display, setDisplay] = useState(true)
 
+    const [modalIsOpen, setIsOpen] = useState(false);
+    
+
     const WeatherFetch = (name) => {
-      // console.log(name)
+     
+      let lon; 
+      let lat;
 
       axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${name}&cnt=7&appid=5c6004fc3786d57b9d23c346916d72e5&units=metric`).then((res)=>{
-          setWeather(res.data.list)
-           console.log(res.data.list)
-      
-
-
+        lon = res.data.city.coord.lon
+        lat = res.data.city.coord.lat
+       
       }).catch((error)=>{
-        console.log('error:', error)
+        console.log('error 34:', error)
       })
+
+
+    
+      setTimeout(()=>{
+        sevenDayas(lat, lon)
+      },1000)
+      
 
 
 
     }
+
+    const sevenDayas = (lat, lon) => {
+      // console.log('lon:', lon)
+      // console.log('lat:', lat)
+      axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=44d2f0f421a5b483b38e2ea12704107e&units=metric`).then((res)=>{
+        // console.log(res.data)
+        setWeather(res.data.daily)
+      }).catch((error)=>{
+      console.log('error 42:', error)
+
+      })
+    }
+
 
     const citiesFetch = (e) => {
       const {value} = e.target
@@ -41,7 +63,7 @@ import cloud from '../images/clouds.png'
       if(value.length != 0){
         setDisplay(false)
         
-        axios.get(`http://localhost:8080/cities`).then(({data})=>{
+        axios.get(`https://list-of-cities.herokuapp.com/cities`).then(({data})=>{
           
           let arr = data.filter((post) =>
           post.city.toLowerCase().includes(value)
@@ -59,14 +81,19 @@ import cloud from '../images/clouds.png'
         }
         
         const fetchWeather = (ele) => {
-          // console.log(ele.city)
-          
-          // setName(ele.city)
           setDisplay(true)
           WeatherFetch(ele.city)
     }
+    // let x;
+    const openPopup = (data) => {
+      setIsOpen(true)
+      localStorage.setItem('singleCity', JSON.stringify(data))
 
-   
+     
+    }
+
+    
+
   return (
     <>
       <div className='mainBox'>
@@ -85,18 +112,39 @@ import cloud from '../images/clouds.png'
           </div>
       </div>
       {/* ------------------------------------------------------------------------------------------- */}
+      
       <div className='outWeatherBox'>
           {weather.map((data, i)=>{
+            // console.log(data)
             return(
-              <div key={i} className='singleweather'>
-                  <h4>Clouds</h4>
+              <div key={i} className='singleweather' onClick={()=>{
+                openPopup(data)
+              }}>
+                  <h4>{new Date(`${data.dt}` * 1000).toLocaleDateString("en", {weekday: "short",})}</h4>
                   <img src={cloud} alt="" className='cloudImg' />
-                  <p className='temp'>{data.main.temp_min} °</p>
-                   <h4 className='temp'>{data.main.temp_max} °</h4>
+                  <p className='temp'>{data.temp.min} °</p>
+                   <h4 className='temp'>{data.temp.max} °</h4>
               </div>
             )
           })}
       </div>
+
+      {/* ---------------------------------------------------------------------------------------------- */}
+          
+    
+    <div className="App">
+      {/* <button }>Open Modal</button> */}
+      <Modal className='modalBox' isOpen={modalIsOpen} onRequestClose={() => setIsOpen(false)}>
+
+
+          <PopupBox/>
+
+
+        <button class="button-38" onClick={() => setIsOpen(false)}>Close Modal</button>
+      </Modal>
+    </div>
+
+
 
     </>
 
