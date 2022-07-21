@@ -6,6 +6,7 @@ import { useState } from 'react'
 import cloud from '../images/clouds.png'
 import Modal from 'react-modal';
 import PopupBox from './PopupBox'
+import Loader1 from './Loader1'
 
 
   const Debounce = () => {
@@ -18,10 +19,11 @@ import PopupBox from './PopupBox'
     const [display, setDisplay] = useState(true)
 
     const [modalIsOpen, setIsOpen] = useState(false);
+    const [loader1, setLoader1] = useState(false)
     
 
     const WeatherFetch = (name) => {
-     
+      setLoader1(true)
       let lon; 
       let lat;
 
@@ -37,7 +39,8 @@ import PopupBox from './PopupBox'
     
       setTimeout(()=>{
         sevenDayas(lat, lon)
-      },1000)
+        setLoader1(true)
+      },1500)
       
 
 
@@ -50,6 +53,8 @@ import PopupBox from './PopupBox'
       axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=44d2f0f421a5b483b38e2ea12704107e&units=metric`).then((res)=>{
         // console.log(res.data)
         setWeather(res.data.daily)
+        setLoader1(false)
+
       }).catch((error)=>{
       console.log('error 42:', error)
 
@@ -83,6 +88,7 @@ import PopupBox from './PopupBox'
         const fetchWeather = (ele) => {
           setDisplay(true)
           WeatherFetch(ele.city)
+          localStorage.setItem('cityName', JSON.stringify(ele.city))
     }
     // let x;
     const openPopup = (data) => {
@@ -111,7 +117,11 @@ import PopupBox from './PopupBox'
             })}
           </div>
       </div>
+      
       {/* ------------------------------------------------------------------------------------------- */}
+            
+      {(loader1) ? <Loader1/> : 
+     
       
       <div className='outWeatherBox'>
           {weather.map((data, i)=>{
@@ -128,6 +138,7 @@ import PopupBox from './PopupBox'
             )
           })}
       </div>
+  }
 
       {/* ---------------------------------------------------------------------------------------------- */}
           

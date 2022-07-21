@@ -3,12 +3,16 @@ import '../styles/PopupBox.css'
 
 const PopupBox = () => {
   let x = JSON.parse(localStorage.getItem('singleCity'))
+  let y = JSON.parse(localStorage.getItem('cityName'))
+  // console.log('y:', y)
   return (
     <>
       <div className='mainBoxpopUp'>
-        <h1>Name of the city</h1>
+        <h1>{y}</h1>
         <p className='temp'>Min Temp : {x.temp.day}</p>
-        {/* <p>Date : {new Date(x.dt)} </p> */}
+        {/* <p  className='temp'>Day :   </p> */}
+        <p  className='temp'>{new Date(`${x.dt}` * 1000).toLocaleDateString()} , {new Date(`${x.dt}` * 1000).toLocaleDateString("en", {weekday: "short",})} </p>
+        <br />
         <table>
           <thead></thead>
           <tbody>
@@ -22,6 +26,7 @@ const PopupBox = () => {
               </tr>
           </tbody>
         </table>
+        <br />
         <p className='temp'>Sunrise : {x.sunrise}|| Sunset : {x.sunset}</p>
         <p className='temp'>Moonrise : {x.moonrise} || Moonset : {x.moonset} </p>
       </div>
