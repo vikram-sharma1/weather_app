@@ -89,7 +89,10 @@
     margin: auto;
     margin-top: 10%;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    backdrop-filter: blur(20px)
+    backdrop-filter: blur(20px);
+    background-image: url(../images/clouds.png);
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 

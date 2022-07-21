@@ -7,6 +7,7 @@ import cloud from '../images/clouds.png'
 import Modal from 'react-modal';
 import PopupBox from './PopupBox'
 import Loader1 from './Loader1'
+import Map from './Map'
 
 
   const Debounce = () => {
@@ -20,6 +21,7 @@ import Loader1 from './Loader1'
 
     const [modalIsOpen, setIsOpen] = useState(false);
     const [loader1, setLoader1] = useState(false)
+    const [mapDisplay, setMapDisplay] = useState(true)
     
 
     const WeatherFetch = (name) => {
@@ -40,6 +42,7 @@ import Loader1 from './Loader1'
       setTimeout(()=>{
         sevenDayas(lat, lon)
         setLoader1(true)
+        setMapDisplay(false)
       },1500)
       
 
@@ -48,10 +51,7 @@ import Loader1 from './Loader1'
     }
 
     const sevenDayas = (lat, lon) => {
-      // console.log('lon:', lon)
-      // console.log('lat:', lat)
       axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=44d2f0f421a5b483b38e2ea12704107e&units=metric`).then((res)=>{
-        // console.log(res.data)
         setWeather(res.data.daily)
         setLoader1(false)
 
@@ -144,18 +144,16 @@ import Loader1 from './Loader1'
           
     
     <div className="App">
-      {/* <button }>Open Modal</button> */}
       <Modal className='modalBox' isOpen={modalIsOpen} onRequestClose={() => setIsOpen(false)}>
-
-
           <PopupBox/>
-
-
         <button class="button-38" onClick={() => setIsOpen(false)}>Close Modal</button>
       </Modal>
     </div>
 
+    {/* ------------------------------------------------------------------------------------------ */}
 
+    {(loader1) ? <Loader1/> : <div style={{display:(mapDisplay)?'none' : 'block'}}><Map /></div>
+     }
 
     </>
 

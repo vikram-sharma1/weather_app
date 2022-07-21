@@ -20,6 +20,7 @@
     border-radius: 50%;
     border-top: 4px solid rgb(0, 0, 0);
     animation: rotate 1.5s linear infinite;
+    margin-bottom: 300px;
   }
   
   .loader::before,
