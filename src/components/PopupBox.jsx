@@ -27,7 +27,7 @@ const PopupBox = () => {
           </tbody>
         </table>
         <br />
-        <p className='temp'>Sunrise : {x.sunrise}|| Sunset : {x.sunset}</p>
+        <p className='temp'>Sunrise : {x.sunrise} || Sunset : {x.sunset}</p>
         <p className='temp'>Moonrise : {x.moonrise} || Moonset : {x.moonset} </p>
       </div>
     </>

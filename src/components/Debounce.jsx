@@ -125,13 +125,15 @@ import Map from './Map'
       
       <div className='outWeatherBox'>
           {weather.map((data, i)=>{
-            // console.log(data)
+            console.log(data)
             return(
               <div key={i} className='singleweather' onClick={()=>{
                 openPopup(data)
               }}>
-                  <h4>{new Date(`${data.dt}` * 1000).toLocaleDateString("en", {weekday: "short",})}</h4>
-                  <img src={cloud} alt="" className='cloudImg' />
+                  <h3  style={{margin:'0px'}}>{new Date(`${data.dt}` * 1000).toLocaleDateString("en", {weekday: "short",})}</h3>
+                  <p style={{margin:'0px'}}>{data.weather[0].main}</p>
+                  <img src={`https://openweathermap.org/img/wn/${data.weather[0].icon}.png`} alt="" className='cloudImg' />
+                  
                   <p className='temp'>{data.temp.min} °</p>
                    <h4 className='temp'>{data.temp.max} °</h4>
               </div>
