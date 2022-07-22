@@ -77,10 +77,10 @@
     background-color: aquamarine;
 }
 .cloudImg{
-    width: 80%;
+    width: 70%;
 }
 .temp{
-    margin: 3px;
+    margin: 1px;
 }
 
 .modalBox{
@@ -137,7 +137,19 @@
 }
 
 #chartData{
-    width: 60%;
+    /* width: 90%; */
+    /* height: 80%; */
     margin: auto;
 }
 
+.mapGraphBox{
+    /* border: 1px solid black; */
+    display: flex;
+    /* height: 400px; */
+
+}
+
+.mapGraphBox > div{
+    flex: 1;
+    width: 100%;
+}

@@ -20,33 +20,36 @@ import { useEffect } from 'react'
     const [cities, setCities] = useState([])
     const [weather, setWeather] = useState([])
     const [display, setDisplay] = useState(true)
-
+    const [cityName, setCityName] = useState('')
+    
     const [modalIsOpen, setIsOpen] = useState(false);
     const [loader1, setLoader1] = useState(false)
     const [mapDisplay, setMapDisplay] = useState(true)
     const arr = useRef([])
-
-
+    
+    
     const location = () => {
       axios
       .get(" https://ipinfo.io/json?token=52ed0181817dc8")
       // .get("http://ip-api.com/json")
       .then((response) => {
-        console.log(response.data.city)
+        // console.log(response.data.city)
+        setCityName(response.data.city)
         WeatherFetch(response.data.city)
         localStorage.setItem('cityName', JSON.stringify(response.data.city))
-    })
-  }
-
+      })
+    }
+    
     useEffect(()=>{
       location()
+      setLoader1(true)
     },[])
 
 
 
 
     const WeatherFetch = (name) => {
-      setLoader1(true)
+      // setLoader1(true)
       let lon; 
       let lat;
 
@@ -63,8 +66,12 @@ import { useEffect } from 'react'
       setTimeout(()=>{
         sevenDayas(lat, lon)
         setLoader1(true)
-        setMapDisplay(false)
       },1000)
+      
+      setTimeout(()=>{
+        
+        setMapDisplay(false)
+      },1100)
       
 
 
@@ -118,6 +125,7 @@ import { useEffect } from 'react'
         const fetchWeather = (ele) => {
           setDisplay(true)
           WeatherFetch(ele.city)
+          setCityName(ele.city)
           localStorage.setItem('cityName', JSON.stringify(ele.city))
     }
     // let x;
@@ -146,7 +154,9 @@ import { useEffect } from 'react'
       <div className='mainBox'>
           <div className='logoinp'>
             <img src={logo} alt=""  className='logo'/>
-            <input type="text" className='inpSearchBox' onChange={citiesFetch} />
+            <input type="text" className='inpSearchBox' onChange={
+              citiesFetch
+            } />
           </div>
           <div className='outputBox' style={{display: display ? "none" : 'block' }}>
             {cities.map((ele,i) => {
@@ -163,7 +173,10 @@ import { useEffect } from 'react'
             
       {(loader1) ? <Loader1/> : 
      
+     <div>
+
       
+        <h2 style={{textAlign:'center', marginTop:'-10px'}}>{cityName}</h2>
       <div className='outWeatherBox'>
           {weather.map((data, i)=>{
             // console.log(data)
@@ -181,6 +194,7 @@ import { useEffect } from 'react'
             )
           })}
       </div>
+          </div>
   }
 
       {/* ---------------------------------------------------------------------------------------------- */}
@@ -195,14 +209,18 @@ import { useEffect } from 'react'
 
     {/* ------------------------------------------------------------------------------------------ */}
 
-    {(loader1) ? <Loader1/> : <div style={{display:(mapDisplay)?'none' : 'block'}}><Map /></div>
-     }
+    {(loader1) ? "" : 
 
-     {/* ------------------------------------------------------------------------------------------- */}
-     <div>
-      
-     </div>
-     <Chart id='chartData'
+  <div style={{display: mapDisplay? 'none' : 'block' }}>
+
+
+    <div className='mapGraphBox'>
+      <div>
+      <Map />
+      </div>
+      <div>
+
+      <Chart id='chartData'
           type="area"
           series={[
             {
@@ -229,20 +247,17 @@ import { useEffect } from 'react'
             },
           }}
         />
-
-      {/* <div className="app">
-        <div className="row">
-          <div className="mixed-chart">
-            <Chart
-              options={chart.options}
-              series={chart.series}
-              type="area"
-              width="500"
-            />
-          </div>
         </div>
-      </div>       */}
+      </div>
 
+            </div>
+        }
+
+     {/* ------------------------------------------------------------------------------------------- */}
+     
+     
+
+  
 
     </>
 
