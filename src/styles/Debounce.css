@@ -136,3 +136,8 @@
   box-shadow: none;
 }
 
+#chartData{
+    width: 60%;
+    margin: auto;
+}
+

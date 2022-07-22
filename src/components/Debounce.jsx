@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import '../styles/Debounce.css'
 import logo from '../images/location.png'
 import axios from 'axios'
@@ -8,6 +8,8 @@ import Modal from 'react-modal';
 import PopupBox from './PopupBox'
 import Loader1 from './Loader1'
 import Map from './Map'
+import Chart from "react-apexcharts";
+import { useEffect } from 'react'
 
 
   const Debounce = () => {
@@ -22,7 +24,26 @@ import Map from './Map'
     const [modalIsOpen, setIsOpen] = useState(false);
     const [loader1, setLoader1] = useState(false)
     const [mapDisplay, setMapDisplay] = useState(true)
-    
+    const arr = useRef([])
+
+
+    const location = () => {
+      axios
+      .get(" https://ipinfo.io/json?token=52ed0181817dc8")
+      // .get("http://ip-api.com/json")
+      .then((response) => {
+        console.log(response.data.city)
+        WeatherFetch(response.data.city)
+        localStorage.setItem('cityName', JSON.stringify(response.data.city))
+    })
+  }
+
+    useEffect(()=>{
+      location()
+    },[])
+
+
+
 
     const WeatherFetch = (name) => {
       setLoader1(true)
@@ -43,16 +64,25 @@ import Map from './Map'
         sevenDayas(lat, lon)
         setLoader1(true)
         setMapDisplay(false)
-      },1500)
+      },1000)
       
 
 
 
     }
-
+   
     const sevenDayas = (lat, lon) => {
+
+
+
       axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=44d2f0f421a5b483b38e2ea12704107e&units=metric`).then((res)=>{
         setWeather(res.data.daily)
+      
+        let x = res.data.daily[0].feels_like
+        // console.log('x:',)
+
+      arr.current =  Object.values(x)
+
         setLoader1(false)
 
       }).catch((error)=>{
@@ -83,7 +113,7 @@ import Map from './Map'
         
             setDisplay(true)
           }
-        }
+    }
         
         const fetchWeather = (ele) => {
           setDisplay(true)
@@ -92,6 +122,17 @@ import Map from './Map'
     }
     // let x;
     const openPopup = (data) => {
+      // console.log('data:', data)
+      
+    
+
+      let day = Object.values(data.feels_like)
+      // console.log('day:', day)
+
+      arr.current = day
+      
+      // console.log("136",arr.current)
+      
       setIsOpen(true)
       localStorage.setItem('singleCity', JSON.stringify(data))
 
@@ -125,7 +166,7 @@ import Map from './Map'
       
       <div className='outWeatherBox'>
           {weather.map((data, i)=>{
-            console.log(data)
+            // console.log(data)
             return(
               <div key={i} className='singleweather' onClick={()=>{
                 openPopup(data)
@@ -156,6 +197,52 @@ import Map from './Map'
 
     {(loader1) ? <Loader1/> : <div style={{display:(mapDisplay)?'none' : 'block'}}><Map /></div>
      }
+
+     {/* ------------------------------------------------------------------------------------------- */}
+     <div>
+      
+     </div>
+     <Chart id='chartData'
+          type="area"
+          series={[
+            {
+              name: "Temperature",
+              data: [...arr.current],
+              // data: [10,20,25,3,61]
+            },
+          ]}
+          options={{
+            dataLabels: {
+              formatter: (val) => {
+                // return `${val}℃`;
+              },
+            },
+            yaxis: {
+              labels: {
+                formatter: (val) => {
+                  return `${Math.ceil(25)}℃`;
+                },
+              },
+            },
+            xaxis: {
+              categories: ["12:00am", "6:00am", "12:00pm", "6:00pm"],
+            },
+          }}
+        />
+
+      {/* <div className="app">
+        <div className="row">
+          <div className="mixed-chart">
+            <Chart
+              options={chart.options}
+              series={chart.series}
+              type="area"
+              width="500"
+            />
+          </div>
+        </div>
+      </div>       */}
+
 
     </>
 
