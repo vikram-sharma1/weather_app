@@ -23,17 +23,13 @@ import { useEffect } from 'react'
     const [cityName, setCityName] = useState('')
     
     const [modalIsOpen, setIsOpen] = useState(false);
-    const [loader1, setLoader1] = useState(false)
-    const [mapDisplay, setMapDisplay] = useState(true)
     const arr = useRef([])
     
     
     const location = () => {
       axios
       .get(" https://ipinfo.io/json?token=52ed0181817dc8")
-      // .get("http://ip-api.com/json")
       .then((response) => {
-        // console.log(response.data.city)
         setCityName(response.data.city)
         WeatherFetch(response.data.city)
         localStorage.setItem('cityName', JSON.stringify(response.data.city))
@@ -42,14 +38,12 @@ import { useEffect } from 'react'
     
     useEffect(()=>{
       location()
-      setLoader1(true)
     },[])
 
 
 
 
     const WeatherFetch = (name) => {
-      // setLoader1(true)
       let lon; 
       let lat;
 
@@ -65,13 +59,9 @@ import { useEffect } from 'react'
     
       setTimeout(()=>{
         sevenDayas(lat, lon)
-        setLoader1(true)
-      },1000)
+      },500)
       
-      setTimeout(()=>{
-        
-        setMapDisplay(false)
-      },1100)
+      
       
 
 
@@ -86,11 +76,9 @@ import { useEffect } from 'react'
         setWeather(res.data.daily)
       
         let x = res.data.daily[0].feels_like
-        // console.log('x:',)
 
       arr.current =  Object.values(x)
 
-        setLoader1(false)
 
       }).catch((error)=>{
       console.log('error 42:', error)
@@ -130,16 +118,11 @@ import { useEffect } from 'react'
     }
     // let x;
     const openPopup = (data) => {
-      // console.log('data:', data)
-      
-    
 
       let day = Object.values(data.feels_like)
-      // console.log('day:', day)
 
       arr.current = day
       
-      // console.log("136",arr.current)
       
       setIsOpen(true)
       localStorage.setItem('singleCity', JSON.stringify(data))
@@ -171,7 +154,6 @@ import { useEffect } from 'react'
       
       {/* ------------------------------------------------------------------------------------------- */}
             
-      {(loader1) ? <Loader1/> : 
      
      <div>
 
@@ -195,7 +177,6 @@ import { useEffect } from 'react'
           })}
       </div>
           </div>
-  }
 
       {/* ---------------------------------------------------------------------------------------------- */}
           
@@ -209,9 +190,8 @@ import { useEffect } from 'react'
 
     {/* ------------------------------------------------------------------------------------------ */}
 
-    {(loader1) ? "" : 
 
-  <div style={{display: mapDisplay? 'none' : 'block' }}>
+  <div>
 
 
     <div className='mapGraphBox'>
@@ -226,13 +206,11 @@ import { useEffect } from 'react'
             {
               name: "Temperature",
               data: [...arr.current],
-              // data: [10,20,25,3,61]
             },
           ]}
           options={{
             dataLabels: {
               formatter: (val) => {
-                // return `${val}℃`;
               },
             },
             yaxis: {
@@ -251,7 +229,6 @@ import { useEffect } from 'react'
       </div>
 
             </div>
-        }
 
      {/* ------------------------------------------------------------------------------------------- */}
      
